@@ -4,7 +4,8 @@ public class BacsPaymentsTypeStrategy : IPaymentTypeStrategy
 {
     public MakePaymentResult Pay(Account account, decimal amount)
     {
-        MakePaymentResult result = new MakePaymentResult();
+        // I may be missing something but the original code had no way of being a success
+        MakePaymentResult result = new MakePaymentResult { Success = true };
 
         if (account == null)
         {
