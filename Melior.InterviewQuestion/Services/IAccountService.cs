@@ -4,6 +4,8 @@ namespace Melior.InterviewQuestion.Services
 {
     public interface IAccountService
     {
-        Account Get();
+        Account Get(string accountNumber);
+
+        void Update(Account account);
     }
 }

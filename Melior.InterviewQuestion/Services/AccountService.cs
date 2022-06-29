@@ -6,25 +6,28 @@ namespace Melior.InterviewQuestion.Services
 {
     public class AccountService : IAccountService
     {
-        private const string DataStoreType = "DataStoreType";
+        private const string DataStoreTypeKey = "DataStoreType";
+        private const string BackupType = "Backup";
+        private readonly IAccountDataStore _accountDataStore = null;
 
-        public Account Get()
+        public AccountService()
         {
-            Account account = null;
-            BackupAccountDataStore accountDataStore = new BackupAccountDataStore();
-
-            string  dataStoreType = ConfigurationManager.AppSettings[DataStoreType];
-
-            switch (dataStoreType)
+            string _dataStoreType = ConfigurationManager.AppSettings[DataStoreTypeKey];
+            _accountDataStore = _dataStoreType switch
             {
-                case "Backup":
-                    account = accountDataStore.GetAccount(request.DebtorAccountNumber);
-                    break;
-                default:
-                    account = accountDataStore.GetAccount(request.DebtorAccountNumber);
-                    break;
-                    
-            }
+                BackupType => new BackupAccountDataStore(),
+                _ => new AccountDataStore(),
+            };
+        }
+
+        public Account Get(string accountNumber)
+        {
+            return _accountDataStore.GetAccount(accountNumber);
+        }
+
+        public void Update(Account account)
+        {
+            _accountDataStore.UpdateAccount(account);
         }
     }
 }
